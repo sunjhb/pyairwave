@@ -1,6 +1,62 @@
-# Airwave API 开发文档
+# Airwave XML API Python 模块 pyairwave
 
-## 通过API认证
+## 如何安装使用
+**为了确保脚本正常运行，请按照如下步骤安装**
+
+1. 下载仓库代码到本地，并解压
+
+2. 启用python虚拟环境
+
+```commandline
+$ python3 -m venv venv
+
+```
+
+3. 激活虚拟环境
+
+```commandline
+macos / linux:
+$ source venv/bin/activate
+
+windows:
+> venv\Scripts\activate.bat
+```
+
+4. 安装依赖模块
+
+```commandline
+pip3 install -r requirement.txt
+
+```
+
+5. 在aw_info.py配置airwave api 凭证
+
+```python
+aw_info = {
+    "ip": "airwave ip",
+    "username": "airwave username",
+    "password": "airwave password"
+}
+```
+
+6. 使用Demo：获取终端详情
+
+```python
+
+from pyairwave.awapi import ArubaAirwave
+from aw_info import aw_info
+
+client_mac = '00:50:56:AC:41:42'
+
+aw = ArubaAirwave(aw_info=aw_info)
+client_detail = aw.get_client_detail(client_mac=client_mac)
+
+print(client_detail)
+
+```
+
+## Airave API 说明
+### 通过API认证
 
 AirWave 要求所有 API 请求通过 /LOGIN 进行身份验证，通过认证以后获取一个名为 X-BISCOTTI token 和 cookie。 AirWave API 请求必须在Headers中包含此 cookie 和 token
 才能完成身份验证并获取到资源，并且可以防止跨站点请求伪造 (CSRF) 攻击。
@@ -34,7 +90,7 @@ https://{{host}}/LOGIN
 请求结果获得cookie 和 headers中的X-BISCOTTI作为token
 
 
-## 通过API获取终端Detail
+### 通过API获取终端Detail
 
 获取终端detail的api仅支持单个终端查询，因此在请求中除了携带cookie和token以外，还需携带终端mac地址作为请求参数。这里以mac地址 00:0E:35:52:8C:AB举例
 > 请求URI：
@@ -148,4 +204,3 @@ https://{{host}}/client_detail.xml?mac=00:0E:35:52:8C:AB&mac=11:22:33:44:55:66
 
 </amp:amp_client_detail>
 ```
-
